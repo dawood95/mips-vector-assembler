@@ -2,26 +2,26 @@
 
 ## reserved registers
 
-$0  --> zero
-$1  --> assembler temporary
-$29 --> stack pointer
-$31 --> return address
+$0  --> zero 
+$1  --> assembler temporary 
+$29 --> stack pointer 
+$31 --> return address 
 
 ## R-type Instructions
 
-ADDU	$rd,$rs,$rt   	R[rd] <= R[rs] + R[rt] (unchecked overflow)
-ADD    	$rd,$rs,$rt   	R[rd] <= R[rs] + R[rt]
-AND    	$rd,$rs,$rt   	R[rd] <= R[rs] AND R[rt]
-JR     	$rs				PC <= R[rs]
-NOR     $rd,$rs,$rt   	R[rd] <= ~(R[rs] OR R[rt])
-OR     	$rd,$rs,$rt   	R[rd] <= R[rs] OR R[rt]
-SLT    	$rd,$rs,$rt   	R[rd] <= (R[rs] < R[rt]) ? 1 : 0
-SLTU    $rd,$rs,$rt   	R[rd] <= (R[rs] < R[rt]) ? 1 : 0
-SLL    	$rd,$rs,shamt 	R[rd] <= R[rs] << shamt
-SRL    	$rd,$rs,shamt 	R[rd] <= R[rs] >> shamt
-SUBU 	$rd,$rs,$rt   	R[rd] <= R[rs] - R[rt] (unchecked overflow)
-SUB  	$rd,$rs,$rt   	R[rd] <= R[rs] - R[rt]
-XOR     $rd,$rs,$rt   	R[rd] <= R[rs] XOR R[rt]
+ADDU	$rd,$rs,$rt   	R[rd] <= R[rs] + R[rt] (unchecked overflow) 
+ADD    	$rd,$rs,$rt   	R[rd] <= R[rs] + R[rt] 
+AND    	$rd,$rs,$rt   	R[rd] <= R[rs] AND R[rt] 
+JR     	$rs				PC <= R[rs] 
+NOR     $rd,$rs,$rt   	R[rd] <= ~(R[rs] OR R[rt]) 
+OR     	$rd,$rs,$rt   	R[rd] <= R[rs] OR R[rt] 
+SLT    	$rd,$rs,$rt   	R[rd] <= (R[rs] < R[rt]) ? 1 : 0 
+SLTU    $rd,$rs,$rt   	R[rd] <= (R[rs] < R[rt]) ? 1 : 0 
+SLL    	$rd,$rs,shamt 	R[rd] <= R[rs] << shamt 
+SRL    	$rd,$rs,shamt 	R[rd] <= R[rs] >> shamt 
+SUBU 	$rd,$rs,$rt   	R[rd] <= R[rs] - R[rt] (unchecked overflow) 
+SUB  	$rd,$rs,$rt   	R[rd] <= R[rs] - R[rt] 
+XOR     $rd,$rs,$rt   	R[rd] <= R[rs] XOR R[rt] 
 
 ## I-type Instructions
 
