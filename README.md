@@ -2,10 +2,10 @@
 
 ## reserved registers
 
-$0  --> zero 
-$1  --> assembler temporary 
-$29 --> stack pointer 
-$31 --> return address 
+$0  --> zero  
+$1  --> assembler temporary  
+$29 --> stack pointer  
+$31 --> return address  
 
 ## R-type Instructions
 
