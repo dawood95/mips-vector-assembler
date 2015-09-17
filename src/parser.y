@@ -12,7 +12,7 @@ void yyerror(const char * s);
 %}
 
 %union {
-    int reg;
+    int number;
 }
 
 
