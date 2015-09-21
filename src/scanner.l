@@ -2,8 +2,11 @@
   
 #define YY_DECL extern "C" int yylex()
 
+#include <iostream>
 #include <stdlib.h>
 #include "parser.h"
+
+using namespace std;
 
 int lineno;
 
@@ -13,7 +16,7 @@ int lineno;
 
 [ \t] 
 
-("#".*\n | "--".*\n | "//".*\n) {
+(("#".*\n)|("--".*\n)|("//".*\n)) {
   /* eat comments */
   unput('\n');
 }
@@ -22,7 +25,7 @@ int lineno;
 "(" { return LPAR; }
 ")" { return RPAR; }
 
-[\n] { lineno++; return NEWLINE; }
+"\n" { yylval.number = ++lineno; return NEWLINE; }
 
 (?i:addu) { return ADDU; }
 (?i:add)  { return ADD;  }
@@ -100,17 +103,30 @@ int lineno;
   return INTEGER;
 }
 
-[$]([0-9]|1[0-9]|2[0-9]|3[0-1]) { 
+['$']([0-9]|1[0-9]|2[0-9]|3[0-1]) { 
   yylval.number = atoi(&yytext[1]);
   return REGISTER;
 }
 
-[$](?i:zero) { 
+['$'](?i:zero) { 
   yylval.number = 0;
   return REGISTER;
 }
 
-. {
-  fprintf (stderr, "Line: %d Error (%s)\n", lineno, yytext);
+[a-zA-Z][a-zA-Z0-9_]*":" { 
+  yytext[strlen(yytext)-1] = '\0'; 
+  yylval.string = (char *)strdup(yytext);
+  return LABEL_DECL;
 }
+
+[a-zA-Z][a-zA-Z0-9_]* { 
+  yylval.string = (char *)strdup(yytext);
+  return LABEL;
+}
+
+. {
+  cerr << "Line: " << lineno << endl
+       << "Error ( " << yytext << " )" << endl;
+}
+
 %%

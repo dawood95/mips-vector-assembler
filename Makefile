@@ -20,4 +20,4 @@ $(EXECUTABLE):	$(GENERATED)/%.cpp src/asmv.cpp
 		$(CC) $(CC_FLAGS) $(GENERATED)/*.cpp src/asmv.cpp $(INC) $(LD_FLAGS) -o $(EXECUTABLE)
 
 clean:;		
-		rm -rf $(GENERATED) $(BUILD)
+		rm -rf $(GENERATED) $(BUILD) lib/parser.h $(EXECUTABLE)

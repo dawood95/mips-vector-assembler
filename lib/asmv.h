@@ -5,7 +5,4 @@
 
 #define DEFAULT_OUT "meminit.hex"
 
-int pass;
-FILE * outfile;
-
 #endif

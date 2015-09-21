@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <iostream>
 #include "parser.h"
@@ -8,10 +9,12 @@ using namespace std;
 
 extern "C" int yyparse();
 
+extern FILE * yyin;
+FILE * outFile;
+int round;
+
 int main (int argc, char * argv[]) {
 
-  extern FILE * yyin;
-  
   if (argc < 2) {
     cout << USAGE << endl;
     exit(EXIT_FAILURE);
@@ -25,27 +28,28 @@ int main (int argc, char * argv[]) {
   }
 
   // Output file
-  outfile = fopen(DEFAULT_OUT, "w");
-  if (outfile == NULL) {
+  outFile = fopen(DEFAULT_OUT, "w");
+  if (outFile == NULL) {
     cout << "Unable to create " << DEFAULT_OUT << endl;
     exit(EXIT_FAILURE);
   }
 
   // Pass to build label table
-  pass = 0;
+  round = 0;
   do {
     yyparse();
   } while (!feof(yyin));
 
   rewind(yyin);
 
-  pass = 1;
+  round = 1;
   do {
     yyparse();
   } while (!feof(yyin));
 
   fclose(yyin);
-  fclose(outfile);
+  fclose(outFile);
 
   return EXIT_SUCCESS;
 }
+
