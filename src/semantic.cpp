@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <string>
+#include <cstring>
 #include <map>
 #include "semantic.h"
 
@@ -15,20 +16,7 @@ void init() {
 }
 
 void finish() {
-    fprintf (output_file, ":00000001FF\n");
-}
-
-void printI(unsigned long int address,
-	    unsigned long int op,
-	    unsigned long int rt,
-	    unsigned long int rs,
-	    unsigned long int imm) {
-
-    unsigned long int instr = ((op & 0x3f) << 26 |
-			       (rs & 0x1f) << 21 |
-			       (rt & 0x1f) << 16 |
-			       (imm & 0xffff));
-    outputHex(address, instr);
+    fprintf (outFile, ":00000001FF\n");
 }
 
 void printR(unsigned long int address,
@@ -46,6 +34,29 @@ void printR(unsigned long int address,
 			       (shamt & 0x1f) << 6 |
 			       (funct & 0x3f));
     outputHex(address, instr);
+}
+
+void printI(unsigned long int address,
+	    unsigned long int op,
+	    unsigned long int rt,
+	    unsigned long int rs,
+	    unsigned long int imm) {
+
+    unsigned long int instr = ((op & 0x3f) << 26 |
+			       (rs & 0x1f) << 21 |
+			       (rt & 0x1f) << 16 |
+			       (imm & 0xffff));
+    outputHex(address, instr);
+}
+
+void printJ(unsigned long int address,
+	    unsigned long int op,
+	    unsigned long int imm) {
+  
+  unsigned long int instr = ((op & 0x3f) << 26 |
+			     (addr & 0x3ffffff));
+
+  outputHex(address, instr);
 }
 
 void outputHex(unsigned long int address,

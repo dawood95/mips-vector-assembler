@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <map>
+#include <vector>
 #include <string>
 #include "parser.h"
 #include "semantic.h"
@@ -23,7 +24,8 @@ void yyerror(const char *);
 
 %union {
     char * string;
-    int number;
+    unsigned long int number;
+    unsigned long int * list;
 }
 
 %token	<number>	INTEGER REGISTER NEWLINE
@@ -48,7 +50,7 @@ void yyerror(const char *);
 %token			COMMA LPAR RPAR
 
 %type	<number>	immediate word
-			
+%type	<list>		word_list
 	    
 %%
 
@@ -295,28 +297,59 @@ vitype:		VADDIU REGISTER COMMA REGISTER COMMA immediate
 	;
 
 
-jtype:		J LABEL
-	|	JAL LABEL
-	;
+jtype:		J immediate
+		{
+		    if(round != 0)
+			printJ(currentAddress, 0x02, (($2 >> 2) & 0x03fffffff));
+		    currentAddress += 4;
+		}
+	|	JAL immediate
+		{
+		    if(round != 0)
+			printJ(currentAddress, 0x03, (($2 >> 2) & 0x03fffffff));
+		    currentAddress += 4;
+		};
 
 halt: 		HALT
 		{
 		    if(round != 0)
 			printI(currentAddress, 0x3f, 0x1f, 0x1f, 0xffff);
+		    currentAddress += 4
 		};
 
-pseudo:		PUSH REGISTER 
+pseudo:		PUSH REGISTER
+		{
+		    if(round != 0) {
+			printI(currentAddress, 0x09, 29, 29, -4);
+			printI(currentAddress+4, 0x1b, $2, 29, 0);
+		    } 
+                    currentAddress += 8;
+		}
 	|	POP REGISTER 
+		{
+		    if(round != 0) {
+			printI(currentAddress, 0x09, 29, 29, 4);
+			printI(currentAddress+4, 0x1b, $2, 29, 0);
+		    } 
+		    currentAddress += 8;
+		}
 	|	NOP 
-	;
+		{
+		    if(round != 0)
+			printI(currentAddress, 0x0, 0x0, 0x0, 0x0);
+		    currentAddress += 4;
+		};
 
 other: 		ORG word
 		{
 		    currentAddress = $2;
 		}
 	|	CHW word_list 
+		{
+		}
 	|	CFW word_list 
-	;
+		{
+		};
 
 immediate:	INTEGER
 		{
@@ -337,8 +370,8 @@ word_list:	word
 word:		INTEGER
 		{
 		    $$ = $1;
-		}
-		;
+		};
+
 %%
 
 void yyerror (const char * s) {
