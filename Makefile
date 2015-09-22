@@ -15,9 +15,9 @@ $(GENERATED)/%.cpp: src/scanner.l src/parser.y
 		flex -o $(GENERATED)/scanner.cpp src/scanner.l
 		bison --defines=lib/parser.h -o $(GENERATED)/parser.cpp src/parser.y
 
-$(EXECUTABLE):	$(GENERATED)/%.cpp src/asmv.cpp	
+$(EXECUTABLE):	$(GENERATED)/%.cpp src/asmv.cpp	src/semantic.cpp
 		$(shell mkdir $(BUILD))
-		$(CC) $(CC_FLAGS) $(GENERATED)/*.cpp src/asmv.cpp $(INC) $(LD_FLAGS) -o $(EXECUTABLE)
+		$(CC) $(CC_FLAGS) $(GENERATED)/*.cpp src/asmv.cpp src/semantic.cpp $(INC) $(LD_FLAGS) -o $(EXECUTABLE)
 
 clean:;		
 		rm -rf $(GENERATED) $(BUILD) lib/parser.h $(EXECUTABLE)

@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <map>
 #include <unistd.h>
 #include <iostream>
 #include "parser.h"
@@ -11,7 +12,10 @@ extern "C" int yyparse();
 
 extern FILE * yyin;
 FILE * outFile;
+
 int round;
+unsigned long int currentAddress;
+map<char*, unsigned long int> symbolTable;
 
 int main (int argc, char * argv[]) {
 
@@ -34,14 +38,19 @@ int main (int argc, char * argv[]) {
     exit(EXIT_FAILURE);
   }
 
+
+    cout << symbolTable.size() << endl;
+
   // Pass to build label table
   round = 0;
   do {
     yyparse();
   } while (!feof(yyin));
 
+  cout << symbolTable.size() << endl;
+  
   rewind(yyin);
-
+  
   round = 1;
   do {
     yyparse();

@@ -2,6 +2,7 @@
   
 #define YY_DECL extern "C" int yylex()
 
+#include <vector>
 #include <iostream>
 #include <stdlib.h>
 #include "parser.h"
