@@ -25,7 +25,6 @@ void yyerror(const char *);
 %union {
     char * string;
     unsigned long int number;
-    unsigned long int * list;
 }
 
 %token	<number>	INTEGER REGISTER NEWLINE
@@ -50,7 +49,6 @@ void yyerror(const char *);
 %token			COMMA LPAR RPAR
 
 %type	<number>	immediate word
-%type	<list>		word_list
 	    
 %%
 
@@ -62,7 +60,9 @@ statement_list:	statement
 		;
 
 statement:	basic_statement 
-	|	LABEL_DECL basic_statement
+	|	label_decl basic_statement
+
+label_decl:	LABEL_DECL
 		{
 		    if (round == 0) 
 			symbolTable[string($1)] = currentAddress;
@@ -270,43 +270,164 @@ itype:		ADDIU REGISTER COMMA REGISTER COMMA immediate
 		    currentAddress += 4;
 		};
 
-vtype:		VADDU REGISTER COMMA REGISTER COMMA REGISTER 
-	|	VADD REGISTER COMMA REGISTER COMMA REGISTER 
-	|	VAND REGISTER COMMA REGISTER COMMA REGISTER 
-	|	VNOR REGISTER COMMA REGISTER COMMA REGISTER 
-	|	VOR REGISTER COMMA REGISTER COMMA REGISTER 	
+vtype:		VADDU REGISTER COMMA REGISTER COMMA REGISTER
+		{
+		    if (round != 0) 
+			printR(currentAddress, 0x20, $2, $4, $6, 0, 0x21);
+		    currentAddress += 4;
+		}
+	|	VADD REGISTER COMMA REGISTER COMMA REGISTER
+		{
+		    if (round != 0)
+			printR(currentAddress, 0x20, $2, $4, $6, 0, 0x20);
+		    currentAddress += 4;
+		    
+		}
+	|	VAND REGISTER COMMA REGISTER COMMA REGISTER
+		{
+		    if (round != 0) 
+			printR(currentAddress, 0x20, $2, $4, $6, 0, 0x24);
+		    currentAddress += 4;
+		    
+		}
+	|	VNOR REGISTER COMMA REGISTER COMMA REGISTER
+		{
+		    if (round != 0) 
+			printR(currentAddress, 0x20, $2, $4, $6, 0, 0x27);
+		    currentAddress += 4;
+		    
+		}
+	|	VOR REGISTER COMMA REGISTER COMMA REGISTER
+		{
+		    if (round != 0) 
+			printR(currentAddress, 0x20, $2, $4, $6, 0, 0x25);
+		    currentAddress += 4;
+		    
+		}
 	|	VSLT REGISTER COMMA REGISTER COMMA REGISTER 
-	|	VSLTU REGISTER COMMA REGISTER COMMA REGISTER 
-	|	VSLL REGISTER COMMA REGISTER COMMA INTEGER 
-	|	VSRL REGISTER COMMA REGISTER COMMA INTEGER 
-	|	VSUBU REGISTER COMMA REGISTER COMMA REGISTER 
-	|	VSUB REGISTER COMMA REGISTER COMMA REGISTER 
-	|	VXOR REGISTER COMMA REGISTER COMMA REGISTER 
-	;
+		{
+		    if (round != 0) 
+			printR(currentAddress, 0x20, $2, $4, $6, 0, 0x2a);
+		    currentAddress += 4;
+		    
+		}
+	|	VSLTU REGISTER COMMA REGISTER COMMA REGISTER
+		{
+		    if (round != 0) 
+			printR(currentAddress, 0x20, $2, $4, $6, 0, 0x2b);
+		    currentAddress += 4;
+		    
+		}
+	|	VSLL REGISTER COMMA REGISTER COMMA INTEGER
+		{
+		    if (round != 0) 
+			printR(currentAddress, 0x20, $2, $4, 0, $6, 0x00);
+		    currentAddress += 4;
+		    
+		}
+	|	VSRL REGISTER COMMA REGISTER COMMA INTEGER
+		{
+		    if (round != 0) 
+			printR(currentAddress, 0x20, $2, $4, 0, $6, 0x02);
+		    currentAddress += 4;
+		    
+		}
+	|	VSUBU REGISTER COMMA REGISTER COMMA REGISTER
+		{
+		    if (round != 0) 
+			printR(currentAddress, 0x20, $2, $4, $6, 0, 0x23);
+		    currentAddress += 4;
+		    
+		}
+	|	VSUB REGISTER COMMA REGISTER COMMA REGISTER
+		{
+		    if (round != 0)
+			printR(currentAddress, 0x20, $2, $4, $6, 0, 0x22);
+		    currentAddress += 4;
+		    
+		}
+	|	VXOR REGISTER COMMA REGISTER COMMA REGISTER
+		{
+		    if (round != 0)
+			printR(currentAddress, 0x20, $2, $4, $6, 0, 0x26);
+		    currentAddress += 4;
+		   
+		};
 
-vitype:		VADDIU REGISTER COMMA REGISTER COMMA immediate 
+vitype:		VADDIU REGISTER COMMA REGISTER COMMA immediate
+		{
+		    if (round != 0)
+			printI(currentAddress, 0x29, $2, $4, $6);
+		    currentAddress += 4;
+		    
+		} 
 	|	VADDI REGISTER COMMA REGISTER COMMA immediate
+		{
+		    if (round != 0)
+			printI(currentAddress, 0x28, $2, $4, $6);
+		    currentAddress += 4;
+		   
+		}
 	|	VANDI REGISTER COMMA REGISTER COMMA immediate
-	|	VLUI REGISTER COMMA immediate
+		{
+		    if (round != 0) 
+			printI(currentAddress, 0x2c, $2, $4, $6);
+		    currentAddress += 4;
+		    
+		}
 	|	VLW REGISTER COMMA immediate LPAR REGISTER RPAR
+		{
+		    if (round != 0) 
+			printI(currentAddress, 0x33, $2, $6, $4);
+		    currentAddress += 4;
+		    
+		}
 	|	VORI REGISTER COMMA REGISTER COMMA immediate
+		{
+		    if (round != 0) 
+			printI(currentAddress, 0x2d, $2, $4, $6);
+		    currentAddress += 4;
+		    
+		}
 	|	VSLTI REGISTER COMMA REGISTER COMMA immediate
+		{
+		    if (round != 0) 
+			printI(currentAddress, 0x2a, $2, $4, $6);
+		    currentAddress += 4;
+		    
+		}
 	|	VSLTIU REGISTER COMMA REGISTER COMMA immediate
+		{
+		    if (round != 0) 
+			printI(currentAddress, 0x2b, $2, $4, $6);
+		    currentAddress += 4;
+		    
+		}
 	|	VSW REGISTER COMMA immediate LPAR REGISTER RPAR
+		{
+		    if (round != 0)
+			printI(currentAddress, 0x3b, $2, $6, $4);
+		    currentAddress += 4;
+		    
+		}
 	|	VXORI REGISTER COMMA REGISTER COMMA immediate
-	;
+		{
+		    if (round != 0) 
+			printI(currentAddress, 0x2e, $2, $4, $6);
+		    currentAddress += 4;
+		};
 
 
 jtype:		J immediate
 		{
 		    if(round != 0)
-			printJ(currentAddress, 0x02, (($2 >> 2) & 0x03fffffff));
+			printJ(currentAddress, 0x02, (($2 >> 2) & 0x03ffffff));
 		    currentAddress += 4;
 		}
 	|	JAL immediate
 		{
 		    if(round != 0)
-			printJ(currentAddress, 0x03, (($2 >> 2) & 0x03fffffff));
+			printJ(currentAddress, 0x03, (($2 >> 2) & 0x03ffffff));
 		    currentAddress += 4;
 		};
 
@@ -328,8 +449,8 @@ pseudo:		PUSH REGISTER
 	|	POP REGISTER 
 		{
 		    if(round != 0) {
-			printI(currentAddress, 0x09, 29, 29, 4);
-			printI(currentAddress+4, 0x1b, $2, 29, 0);
+			printI(currentAddress, 0x1b, $2, 29, 0);
+			printI(currentAddress+4, 0x09, 29, 29, 4);
 		    } 
 		    currentAddress += 8;
 		}
@@ -342,13 +463,16 @@ pseudo:		PUSH REGISTER
 
 other: 		ORG word
 		{
+		    if ($2 < currentAddress) {
+			cout << "Cannot ORGanize address to " << $2 << " overlapping address " << currentAddress << endl;
+			exit(-1);
+		    }
 		    currentAddress = $2;
 		}
-	|	CHW word_list 
+	|	CFW word
 		{
-		}
-	|	CFW word_list 
-		{
+		    outputHex(currentAddress, $2);
+		    currentAddress = $2;
 		};
 
 immediate:	INTEGER
@@ -363,10 +487,6 @@ immediate:	INTEGER
 			$$ = 0;
 		};
 
-word_list:	word
-	|	word_list COMMA word
-		;
-
 word:		INTEGER
 		{
 		    $$ = $1;
@@ -376,4 +496,5 @@ word:		INTEGER
 
 void yyerror (const char * s) {
     cerr << "ERROR : " << s << endl;
+    exit(-1);
 }

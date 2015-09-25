@@ -39,7 +39,7 @@ int main (int argc, char * argv[]) {
   }
 
 
-    cout << symbolTable.size() << endl;
+  cout << symbolTable.size() << endl;
 
   // Pass to build label table
   round = 0;

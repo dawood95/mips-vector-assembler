@@ -16,6 +16,8 @@ void init() {
 }
 
 void finish() {
+    for(map<string, unsigned long int>::iterator it = symbolTable.begin(); it != symbolTable.end(); it++)
+	cout << std::hex << it->first << " ---- " << it->second << endl;
     fprintf (outFile, ":00000001FF\n");
 }
 
@@ -54,7 +56,7 @@ void printJ(unsigned long int address,
 	    unsigned long int imm) {
   
   unsigned long int instr = ((op & 0x3f) << 26 |
-			     (addr & 0x3ffffff));
+			     (imm & 0x3ffffff));
 
   outputHex(address, instr);
 }

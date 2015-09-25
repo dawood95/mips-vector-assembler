@@ -28,37 +28,38 @@ int lineno;
 
 "\n" { yylval.number = ++lineno; return NEWLINE; }
 
-(?i:addu) { return ADDU; }
-(?i:add)  { return ADD;  }
-(?i:and)  { return AND; }
+(s.)?(?i:addu) { return ADDU; }
+(s.)?(?i:add)  { return ADD;  }
+(s.)?(?i:and)  { return AND; }
+(s.)?(?i:nor)  { return NOR; }
+(s.)?(?i:or)   { return OR; }
+(s.)?(?i:slt)  { return SLT; }
+(s.)?(?i:sltu) { return SLTU; }
+(s.)?(?i:sll)  { return SLL; }
+(s.)?(?i:srl)  { return SRL; }
+(s.)?(?i:subu) { return SUBU; }
+(s.)?(?i:sub)  { return SUB; }
+(s.)?(?i:xor)  { return XOR; }
+
+(s.)?(?i:addiu) { return ADDIU; }
+(s.)?(?i:addi)  { return ADDI; }
+(s.)?(?i:andi)  { return ANDI; }
+(s.)?(?i:lui)   { return LUI; }
+(s.)?(?i:lw)    { return LW; }
+(s.)?(?i:ori)   { return ORI; }
+(s.)?(?i:slti)  { return SLTI; }
+(s.)?(?i:sltiu) { return SLTIU; }
+(s.)?(?i:sw)    { return SW; }
+(s.)?(?i:ll)    { return LL; }
+(s.)?(?i:sc)    { return SC; }
+(s.)?(?i:xori)  { return XORI; }
+
 (?i:jr)   { return JR; }
-(?i:nor)  { return NOR; }
-(?i:or)   { return OR; }
-(?i:slt)  { return SLT; }
-(?i:sltu) { return SLTU; }
-(?i:sll)  { return SLL; }
-(?i:srl)  { return SRL; }
-(?i:subu) { return SUBU; }
-(?i:sub)  { return SUB; }
-(?i:xor)  { return XOR; }
-
-(?i:addiu) { return ADDIU; }
-(?i:addi)  { return ADDI; }
-(?i:andi)  { return ANDI; }
-(?i:beq)   { return BEQ; }
-(?i:bne)   { return BNE; }
-(?i:lui)   { return LUI; }
-(?i:lw)    { return LW; }
-(?i:ori)   { return ORI; }
-(?i:slti)  { return SLTI; }
-(?i:sltiu) { return SLTIU; }
-(?i:sw)    { return SW; }
-(?i:ll)    { return LL; }
-(?i:sc)    { return SC; }
-(?i:xori)  { return XORI; }
-
 (?i:j)    { return J; }
 (?i:jal)  { return JAL; }
+
+(?i:beq)        { return BEQ; }
+(?i:bne)        { return BNE; }
 
 (?i:halt) { return HALT; }
 
@@ -67,32 +68,31 @@ int lineno;
 (?i:nop)  { return NOP; }
 
 (?i:org)  { return ORG; }
-(?i:chw)  { return CHW; }
 (?i:cfw)  { return CFW; }
 
-(?i:vaddu) { return VADDU; }
-(?i:vadd)  { return VADD;  }
-(?i:vand)  { return VAND; }
-(?i:vnor)  { return VNOR; }
-(?i:vor)   { return VOR; }
-(?i:vslt)  { return VSLT; }
-(?i:vsltu) { return VSLTU; }
-(?i:vsll)  { return VSLL; }
-(?i:vsrl)  { return VSRL; }
-(?i:vsubu) { return VSUBU; }
-(?i:vsub)  { return VSUB; }
-(?i:vxor)  { return VXOR; }
+(v.)(?i:addu) { return VADDU; }
+(v.)(?i:add)  { return VADD;  }
+(v.)(?i:and)  { return VAND; }
+(v.)(?i:nor)  { return VNOR; }
+(v.)(?i:or)   { return VOR; }
+(v.)(?i:slt)  { return VSLT; }
+(v.)(?i:sltu) { return VSLTU; }
+(v.)(?i:sll)  { return VSLL; }
+(v.)(?i:srl)  { return VSRL; }
+(v.)(?i:subu) { return VSUBU; }
+(v.)(?i:sub)  { return VSUB; }
+(v.)(?i:xor)  { return VXOR; }
 
-(?i:vaddiu) { return VADDIU; }
-(?i:vaddi)  { return VADDI; }
-(?i:vandi)  { return VANDI; }
-(?i:vlui)   { return VLUI; }
-(?i:vlw)    { return VLW; }
-(?i:vori)   { return VORI; }
-(?i:vslti)  { return VSLTI; }
-(?i:vsltiu) { return VSLTIU; }
-(?i:vsw)    { return VSW; }
-(?i:vxori)  { return VXORI; }
+(v.)(?i:addiu) { return VADDIU; }
+(v.)(?i:addi)  { return VADDI; }
+(v.)(?i:andi)  { return VANDI; }
+(v.)(?i:lui)   { return VLUI; }
+(v.)(?i:lw)    { return VLW; }
+(v.)(?i:ori)   { return VORI; }
+(v.)(?i:slti)  { return VSLTI; }
+(v.)(?i:sltiu) { return VSLTIU; }
+(v.)(?i:sw)    { return VSW; }
+(v.)(?i:xori)  { return VXORI; }
 
 "0x"[0-9a-fA-F]+ {
   yylval.number = strtol(yytext, (char **)NULL, 16);

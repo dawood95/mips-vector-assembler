@@ -22,6 +22,10 @@ void printR(unsigned long int,
 	    unsigned long int,
 	    unsigned long int);
 
+void printJ(unsigned long int,
+	    unsigned long int,
+	    unsigned long int);
+
 void outputHex(unsigned long int, unsigned long int);
 
 #endif
