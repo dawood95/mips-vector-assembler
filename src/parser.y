@@ -52,7 +52,7 @@ void yyerror(const char *);
 	    
 %%
 
-program:   	{init();} statement_list {finish();}
+program:   	{init();} statement_list {if(round != 0) finish();}
 		;
 
 statement_list:	statement
@@ -471,8 +471,9 @@ other: 		ORG word
 		}
 	|	CFW word
 		{
-		    outputHex(currentAddress, $2);
-		    currentAddress = $2;
+		    if(round != 0)
+			outputHex(currentAddress, $2);
+		    currentAddress += 4;
 		};
 
 immediate:	INTEGER
