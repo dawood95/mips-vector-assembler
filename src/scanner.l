@@ -87,12 +87,15 @@ int lineno;
 (v.)(?i:addi)  { return VADDI; }
 (v.)(?i:andi)  { return VANDI; }
 (v.)(?i:lui)   { return VLUI; }
-(v.)(?i:lw)    { return VLW; }
-(v.)(?i:ori)   { return VORI; }
 (v.)(?i:slti)  { return VSLTI; }
 (v.)(?i:sltiu) { return VSLTIU; }
 (v.)(?i:sw)    { return VSW; }
+(v.)(?i:swo)    { return VSWO; }
 (v.)(?i:xori)  { return VXORI; }
+(v.)(?i:lw)    { return VLW; }
+(v.)(?i:lwo)    { return VLWO; }
+(v.)(?i:ori)   { return VORI; }
+
 
 "0x"[0-9a-fA-F]+ {
   yylval.number = strtol(yytext, (char **)NULL, 16);

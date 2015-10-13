@@ -43,8 +43,8 @@ void yyerror(const char *);
 			VOR VSLT VSLTU VSLL VSRL
 			VSUBU VSUB VXOR
 			VADDIU VADDI VANDI VLUI 
-			VLW VORI VSLTI VSLTIU
-			VSW VXORI 
+			VLW VLWO VORI VSLTI VSLTIU
+			VSW VSWO VXORI 
 
 %token			COMMA LPAR RPAR
 
@@ -382,6 +382,13 @@ vitype:		VADDIU REGISTER COMMA REGISTER COMMA immediate
 		    currentAddress += 4;
 		    
 		}
+	|	VLWO REGISTER COMMA immediate LPAR REGISTER RPAR
+		{
+		    if (round != 0) 
+			printI(currentAddress, 0x31, $2, $6, $4);
+		    currentAddress += 4;
+		    
+		}
 	|	VORI REGISTER COMMA REGISTER COMMA immediate
 		{
 		    if (round != 0) 
@@ -407,6 +414,13 @@ vitype:		VADDIU REGISTER COMMA REGISTER COMMA immediate
 		{
 		    if (round != 0)
 			printI(currentAddress, 0x3b, $2, $6, $4);
+		    currentAddress += 4;
+		    
+		}
+	|	VSWO REGISTER COMMA immediate LPAR REGISTER RPAR
+		{
+		    if (round != 0)
+			printI(currentAddress, 0x39, $2, $6, $4);
 		    currentAddress += 4;
 		    
 		}
