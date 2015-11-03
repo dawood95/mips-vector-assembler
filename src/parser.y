@@ -516,25 +516,25 @@ mvitype:				MVADDIU REGISTER COMMA REGISTER COMMA immediate
 mtype:					MLT REGISTER COMMA REGISTER
 								{
 										if (round != 0) 
-												printR(currentAddress, 0x21, $2, $4, 0, 0, 0x02);
+												printR(currentAddress, 0x21, 0, $2, $4, 0, 0x02);
 										currentAddress += 4;
 								}
 				|				MLTU REGISTER COMMA REGISTER
 								{
 										if (round != 0) 
-												printR(currentAddress, 0x22, $2, $4, 0, 0, 0x02);
+												printR(currentAddress, 0x22, 0, $2, $4, 0, 0x02);
 										currentAddress += 4;
 								}
 				|				MEQ REGISTER COMMA REGISTER
 								{
 										if (round != 0) 
-												printR(currentAddress, 0x23, $2, $4, 0, 0, 0x02);
+												printR(currentAddress, 0x23, 0, $2, $4, 0, 0x02);
 										currentAddress += 4;
 								}
-				|				MINV REGISTER COMMA REGISTER
+				|				MINV
 								{
 										if (round != 0) 
-												printR(currentAddress, 0x25, $2, $4, 0, 0, 0x02);
+												printR(currentAddress, 0x25, 0, 0, 0, 0, 0x00);
 										currentAddress += 4;
 								};
 
