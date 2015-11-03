@@ -38,16 +38,11 @@ int main (int argc, char * argv[]) {
     exit(EXIT_FAILURE);
   }
 
-
-  cout << symbolTable.size() << endl;
-
   // Pass to build label table
   round = 0;
   do {
     yyparse();
   } while (!feof(yyin));
-
-  cout << symbolTable.size() << endl;
   
   rewind(yyin);
   
