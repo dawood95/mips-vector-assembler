@@ -50,7 +50,8 @@ void yyerror(const char *);
 						MVSUBU MVSUB MVXOR
 						MVADDIU MVADDI MVANDI MVLUI 
 						MVORI MVXORI 
-						MLT MLTU MEQ MINV
+						MLT MLTU MEQ MINV 
+						SYNC
 												
 %token									COMMA LPAR RPAR
 												
@@ -440,7 +441,14 @@ vitype:					VADDIU REGISTER COMMA REGISTER COMMA immediate
 												printI(currentAddress, 0x2c, $2, $4, $6);
 										currentAddress += 4;
 								}
-				|				VLW REGISTER COMMA immediate LPAR REGISTER RPAR
+		        | 		        SYNC immediate
+				                {
+										if (round != 0) 
+												printI(currentAddress, 0x3d, 0, 0, $2);
+										currentAddress += 4;
+								}
+		
+		        |		        VLW REGISTER COMMA immediate LPAR REGISTER RPAR
 								{
 										if (round != 0) 
 												printI(currentAddress, 0x33, $2, $6, $4);

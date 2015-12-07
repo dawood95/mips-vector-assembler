@@ -63,6 +63,8 @@ int lineno;
 (v.)(?i:beq)        { return VBEQ; }
 (v.)(?i:bne)        { return VBNE; }
 
+(?i:setsync) { return SYNC; }
+
 (?i:halt) { return HALT; }
 
 (?i:push) { return PUSH; }
