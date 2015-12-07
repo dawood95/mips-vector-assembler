@@ -27,30 +27,30 @@ void yyerror(const char *);
     unsigned long int number;
 }
 																
-%token	<number>				INTEGER REGISTER NEWLINE
+%token	<number>		INTEGER REGISTER NEWLINE
 												
-%token	<string>				LABEL_DECL LABEL
+%token	<string>		LABEL_DECL LABEL
 												
-%token									ADDU ADD AND JR NOR
-												OR SLT SLTU SLL SRL
-												SUBU SUB XOR
-												ADDIU ADDI ANDI BEQ BNE
-												LUI LW ORI SLTI SLTIU
-												SW LL SC XORI J JAL
-												HALT PUSH POP NOP ORG
-												CHW CFW 
-												VADDU VADD VAND VNOR
-												VOR VSLT VSLTU VSLL VSRL
-												VSUBU VSUB VXOR
-												VADDIU VADDI VANDI VLUI 
-												VLW VLWO VORI VSLTI VSLTIU
-												VSW VSWO VXORI 
-												MVADDU MVADD MVAND MVNOR
-												MVOR MVSLT MVSLTU MVSLL MVSRL
-												MVSUBU MVSUB MVXOR
-												MVADDIU MVADDI MVANDI MVLUI 
-												MVORI MVXORI 
-												MLT MLTU MEQ MINV
+%token					ADDU ADD AND JR NOR
+						OR SLT SLTU SLL SRL
+						SUBU SUB XOR
+						ADDIU ADDI ANDI BEQ BNE
+						LUI LW ORI SLTI SLTIU
+						SW LL SC XORI J JAL
+						HALT PUSH POP NOP ORG
+						CHW CFW 
+						VADDU VADD VAND VNOR
+						VOR VSLT VSLTU VSLL VSRL
+						VSUBU VSUB VXOR
+						VADDIU VADDI VANDI VBEQ VBNE
+						VLUI VLW VLWO VORI VSLTI VSLTIU
+						VSW VSWO VXORI 
+						MVADDU MVADD MVAND MVNOR
+						MVOR MVSLT MVSLTU MVSLL MVSRL
+						MVSUBU MVSUB MVXOR
+						MVADDIU MVADDI MVANDI MVLUI 
+						MVORI MVXORI 
+						MLT MLTU MEQ MINV
 												
 %token									COMMA LPAR RPAR
 												
@@ -415,6 +415,19 @@ vitype:					VADDIU REGISTER COMMA REGISTER COMMA immediate
 												printI(currentAddress, 0x29, $2, $4, $6);
 										currentAddress += 4;
 								} 
+				|				VBEQ REGISTER COMMA REGISTER COMMA immediate
+								{
+										if (round != 0)
+												printI(currentAddress, 0x36, $4, $2, ($6 - (currentAddress + 4))/4);
+										currentAddress += 4;
+								}
+				|				VBNE REGISTER COMMA REGISTER COMMA immediate
+								{
+										cout << $6 << endl;
+										if (round != 0)
+												printI(currentAddress, 0x35, $4, $2, ($6 - (currentAddress + 4))/4);
+										currentAddress += 4;
+								}
 				|				VADDI REGISTER COMMA REGISTER COMMA immediate
 								{
 										if (round != 0)

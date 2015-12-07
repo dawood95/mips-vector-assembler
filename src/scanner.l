@@ -58,8 +58,10 @@ int lineno;
 (?i:j)    { return J; }
 (?i:jal)  { return JAL; }
 
-(?i:beq)        { return BEQ; }
-(?i:bne)        { return BNE; }
+(s.)?(?i:beq)        { return BEQ; }
+(s.)?(?i:bne)        { return BNE; }
+(v.)(?i:beq)        { return VBEQ; }
+(v.)(?i:bne)        { return VBNE; }
 
 (?i:halt) { return HALT; }
 
